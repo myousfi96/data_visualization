@@ -12,6 +12,7 @@ public enum VisType
     Scatterplot,
     Histogram,
     Density,
+    Violinplot,
     NumberOfVisTypes
 }
 
@@ -92,7 +93,6 @@ public class Vis
     {
 
         visContainer = new VisContainer();
-        
         visContainerObject = visContainer.CreateVisContainer(title);
         visContainerObject.transform.SetParent(container.transform);
 
@@ -208,6 +208,8 @@ public class Vis
                 return new VisHistogram();
             case VisType.Density:
                 return new VisDensity();
+            case VisType.Violinplot:
+                return new VisViolinPlot();
         }
     }
 

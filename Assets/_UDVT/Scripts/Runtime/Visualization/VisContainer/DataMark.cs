@@ -94,7 +94,7 @@ public class DataMark
         dataMarkInstance = GameObject.Instantiate(dataMarkPrefab, channel.position, Quaternion.Euler(channel.rotation), visContainer);
         dataMarkInstance.name = dataMarkPrefab.name+ "_" + markID;
         meshRenderer = dataMarkInstance.GetComponent<MeshRenderer>();
-
+ 
         // Get initial data of object
         this.dataChannel = channel;
 
@@ -121,7 +121,7 @@ public class DataMark
         SetSize(channel.size);
         //SetFacing(channel.facing);
         SetRot(channel.rotation);
-        SetColor(channel.color);
+       SetColor(channel.color);
     }
 
     public void SetPos(Vector3 position)

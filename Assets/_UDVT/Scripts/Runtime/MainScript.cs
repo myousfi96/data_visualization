@@ -52,7 +52,7 @@ public class MainScript : MonoBehaviour
 
         //## 03: Visualize Dataset
 
-        vis = Vis.GetSpecificVisType(VisType.Density);
+        vis = Vis.GetSpecificVisType(VisType.Violinplot);
         vis.AppendData(dataSet);
         vis.CreateVis(this.gameObject);
     }

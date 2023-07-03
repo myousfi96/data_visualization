@@ -1,8 +1,8 @@
 using System.Linq;
 using UnityEngine;
-public class VisDensity : Vis
+public class VisViolinPlot : Vis
 {
-    public VisDensity()
+    public VisViolinPlot()
     {
         title = "Density";
 
@@ -17,26 +17,32 @@ public class VisDensity : Vis
     {
         base.CreateVis(container);
         
-        double [,] data = KernelDensityEstimation.KDE(dataSets[0].ElementAt(0).Value, 2, 100);
+        double [,] data = KernelDensityEstimationViolin.KDE(dataSets[0].ElementAt(0).Value, 2, 100);
+        DataStatistics  statistics =  new DataStatistics(dataSets[0].ElementAt(0).Value);
+
+
 
         double [] x = new double[100];
-        double [] y = new double[100];
-  
+        double [] y = new double[200];
+
+
 
 
         
         for (int i = 0; i < 100; i++)
         {
-           x[i] = data[i, 0] ;
-          y[i] = data[i, 1];
+          x[i] = data[i, 0] ;
         }
+
+        for (int i = 0; i < 200; i++)
+        {
+                         y[i] = data[i, 1];
+
+   
+        }
+
         //## 01:  Create Axes and Grids
 
-        Vector3[] points = new Vector3[x.Length];
-        for (int i = 0; i < x.Length; i++)
-        {
-            points[i] = new Vector3((float)x[i],(float)y[i],  0f);
-        }
   
         visContainer.CreateAxis(dataSets[0].ElementAt(0).Key, x, Direction.X);
         visContainer.CreateGrid(Direction.X, Direction.Y);
@@ -52,13 +58,14 @@ public class VisDensity : Vis
         //## 02: Set Remaining Vis Channels (Color,...)
         visContainer.SetChannel(VisChannel.XPos, x);
         visContainer.SetChannel(VisChannel.YPos, y);
+
+
         
         // visContainer.SetChannel(VisChannel.ZPos, dataSets[0].ElementAt(2).Value);
-        visContainer.SetChannel(VisChannel.Color, y);
+        // visContainer.SetChannel(VisChannel.Color, y);
 
         //## 03: Draw all Data Points with the provided Channels 
-        visContainer.CreateDataMarks(dataMarkPrefab, true);
-        //visContainer.renderLine(points);
+        visContainer.CreateDataMarks(dataMarkPrefab, false, true, true);
 
         //## 04: Rescale Chart
         visContainerObject.transform.localScale = new Vector3(width, height, depth);

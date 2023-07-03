@@ -13,6 +13,9 @@ public class VisContainer
     public GameObject axisContainer;        // Empty GameObject for Hierarchy
     public GameObject gridContainer;        // Empty GameObject for Hierarchy
     public GameObject dataMarkContainer;    // Empty GameObject for Hierarchy
+    public GameObject lineContainer;
+    public GameObject meshContainer;
+
 
 
     // Main Container Elements
@@ -55,17 +58,26 @@ public class VisContainer
         axisContainer = new GameObject("Axes");
         gridContainer = new GameObject("Grids");
         dataMarkContainer = new GameObject("Data Marks");
+        lineContainer = new GameObject("Line");
+        meshContainer = new GameObject("Mesh");
+
+
 
         //Add Childs
         axisContainer.transform.parent = visContainer.transform;
         gridContainer.transform.parent = visContainer.transform;
         dataMarkContainer.transform.parent = visContainer.transform;
+        lineContainer.transform.parent = visContainer.transform;
+        meshContainer.transform.parent = visContainer.transform;
+
+
 
         //Set the basic container size by using the visContainer
         containerBounds = visContainer.GetComponent<BoxCollider>().bounds;
   
         return visContainer;
     }
+   
 
     /// <summary>
     /// Method to create a new Axis for a Direction (X/Y/Z), and add it to the list of DataAxis.
@@ -99,6 +111,107 @@ public class VisContainer
 
         dataGridList.Add(grid);
     }
+    
+public void lineRender ( Vector3 [] points){
+
+
+        LineRenderer lineRenderer;
+        // Get the Line Renderer component attached to the same GameObject
+        lineRenderer = lineContainer.AddComponent<LineRenderer>();
+     
+
+
+
+        // Set the desired properties
+        lineRenderer.startWidth = 0.02f;
+        lineRenderer.endWidth = 0.02f;
+        lineRenderer.material.color = Color.white;
+        lineRenderer.alignment = LineAlignment.TransformZ;
+        lineRenderer.positionCount = points.Length;
+        lineRenderer.SetPositions(points);
+
+
+
+}
+
+public void MeshRender(Vector3 [] points){
+        Mesh mesh = new Mesh();
+         int[] triangles = new int[(points.Length - 2)  * 6];
+
+        // Populate the triangle indices based on the length of the points array
+        int index = 0;
+        for (int i = 1; i < points.Length - 1; i++)
+        {
+            triangles[index] = i-1;
+            triangles[index + 1] = i;
+            triangles[index + 2] = i+1;
+            triangles[index +3] = i+1;
+            triangles[index + 4] = i;
+            triangles[index + 5] = i-1;
+            
+            index += 6;
+        }
+
+           MeshFilter meshFilter = meshContainer.AddComponent<MeshFilter>();
+        MeshRenderer meshRenderer = meshContainer.AddComponent<MeshRenderer>();
+
+        meshRenderer.material = new Material(Shader.Find("Standard"));
+        mesh.vertices = points;
+
+
+        // Assign the triangles to the mesh
+        mesh.triangles = triangles;
+        meshFilter.mesh = mesh;
+
+
+}
+
+public void DrawStatistics(double [] scaledx, double [] scaledy ){
+
+
+      DataStatistics  statisticsy =  new DataStatistics(scaledy);
+        double mediany = statisticsy.Median();
+        double maxy = statisticsy.Max();
+        double miny = statisticsy.Min();
+        double irq25y = statisticsy.LowerQuartile();
+        double irq75y = statisticsy.UpperQuartile();
+
+        DataStatistics  statisticsx =  new DataStatistics(scaledx);
+        double medianx = statisticsx.Median();
+        double maxx = statisticsx.Max();
+        double minx = statisticsx.Min();
+        double irq25x = statisticsx.LowerQuartile();
+        double irq75x = statisticsy.UpperQuartile();
+
+
+
+        GameObject dataMarkPrefab = (GameObject)Resources.Load("Prefabs/DataVisPrefabs/Marks/Cube");
+        DataMark dataMark1 = new DataMark(dataMarkList.Count, dataMarkPrefab);
+
+        DataMark.Channel channel1 = DataMark.DefaultDataChannel();
+        channel1.position.y = (float)mediany;
+        channel1.position.x = (float)medianx;
+                channel1.color =  Color.white;
+
+        dataMark1.CreateDataMark(dataMarkContainer.transform, channel1);
+        channel1.position.y = (float)mediany;
+        channel1.position.x = (float)minx;
+        channel1.color =  Color.white;
+        dataMark1.CreateDataMark(dataMarkContainer.transform, channel1);
+        channel1.position.y = (float)mediany;
+        channel1.position.x = (float)maxx;
+                channel1.color =  Color.white;
+        dataMark1.CreateDataMark(dataMarkContainer.transform, channel1);
+        channel1.position.y = (float)mediany;
+        channel1.position.x = (float)irq25x;
+        channel1.color =  Color.white;
+        dataMark1.CreateDataMark(dataMarkContainer.transform, channel1);
+        channel1.position.y = (float)mediany;
+        channel1.position.x = (float)irq75x;
+        channel1.color =  Color.white;
+        dataMark1.CreateDataMark(dataMarkContainer.transform, channel1);
+
+}
 
     /// <summary>
     /// Method to create a new DataMark for each value in the channelValues Dictionary.
@@ -106,11 +219,16 @@ public class VisContainer
     /// The DataMark is created with each channel (Pos, Size, Color,...) which has data saved to it.
     /// </summary>
     /// <param name="markPrefab"></param>
-    public void CreateDataMarks(GameObject markPrefab)
+public  void CreateDataMarks(GameObject markPrefab, bool line = false, bool mesh = false, bool statistics = false)
     {
+        // Set the positions to the Line Renderer component
+
         // Check how many values the datset has
         int numberOfMarks = channelValues[0].Length;
-       
+        Vector3[] linePoints = new Vector3[numberOfMarks];
+        Vector3[] meshPoints = new Vector3[numberOfMarks];
+        double[] scaledy = new double[numberOfMarks];
+        double[] scaledx = new double[numberOfMarks];
 
 
         for (int mark = 0; mark < numberOfMarks; mark++)
@@ -120,11 +238,34 @@ public class VisContainer
 
             //Create Values
             DataMark.Channel channel = DataMark.DefaultDataChannel();
+
             channel = GetDataMarkChannelValues(channel,mark);
+            
+            linePoints[mark] = new Vector3(channel.position.x/4, channel.position.y/4, channel.position.z/4);
+            meshPoints[mark] = new Vector3(channel.position.x, channel.position.y, channel.position.z);
+
+            scaledy[mark] = channel.position.y;
+            scaledx[mark] = channel.position.x;
+
+
             dataMark.CreateDataMark(dataMarkContainer.transform, channel);
             dataMarkList.Add(dataMark);
             
         }
+        
+        if (line == true)
+
+            lineRender(linePoints);
+
+        if (mesh == true)
+            MeshRender(meshPoints);
+        
+        if (statistics == true)
+            DrawStatistics(scaledx, scaledy);
+
+
+       
+      
     }
 
     /// <summary>
