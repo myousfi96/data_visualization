@@ -219,7 +219,7 @@ public void DrawStatistics(double [] scaledx, double [] scaledy ){
     /// The DataMark is created with each channel (Pos, Size, Color,...) which has data saved to it.
     /// </summary>
     /// <param name="markPrefab"></param>
-public  void CreateDataMarks(GameObject markPrefab, bool line = false, bool mesh = false, bool statistics = false)
+  public  virtual void CreateDataMarks(GameObject markPrefab, bool line = false, bool mesh = false, bool statistics = false, bool surface = false)
     {
         // Set the positions to the Line Renderer component
 
