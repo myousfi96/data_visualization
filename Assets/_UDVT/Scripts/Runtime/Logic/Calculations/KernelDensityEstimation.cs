@@ -9,7 +9,7 @@ public class KernelDensityEstimation
     /// <summary>
     /// The method takes a one-dimensional data set, a bandwith, and the number of output points and
     /// returns a 2D array with the x and y values of the estimated probability density function.
-    /// </summary>
+    /// </summary>  
     /// <param name="data"></param>
     /// <param name="sigma"></param>
     /// <param name="nsteps"></param>

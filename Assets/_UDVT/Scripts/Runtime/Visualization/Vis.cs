@@ -10,6 +10,7 @@ using UnityEngine;
 public enum VisType
 {
     Scatterplot,
+    //NewCode_Group4
     Histogram,
     Density,
     Violinplot,
@@ -59,9 +60,10 @@ public class Vis
     public float height = 0.25f;                                // Vis container height in centimeters.
     public float depth = 0.25f;                                 // Vis container depth in centimeters.
 
-    public float[] xyzOffset = new[]{0.1f, 0.1f, 0.1f};         // Offset from origin (0,0) and End (1,0) for the Axes (x,y,z).
+    public float[] xyzOffset = new[] { 0.1f, 0.1f, 0.1f };         // Offset from origin (0,0) and End (1,0) for the Axes (x,y,z).
     public int[] xyzTicks = { 10, 10, 10 };                     // Amount of Ticks between min/max tick for Axes (x,y,z).
-    public Color[] colorScheme = {Color.blue, Color.red};       // Defines Color Scheme for Color Channel
+    //NewCode_Group4
+    public Color[] colorScheme = { Color.blue, Color.red };       // Defines Color Scheme for Color Channel
 
 
     /// <summary>
@@ -145,7 +147,7 @@ public class Vis
         {
             var currentValueCount = values.ElementAt(dim).Value.Length;
 
-            if (currentValueCount <= 0 || currentValueCount - numberOfValues[numberOfValues.Count-1] != 0)
+            if (currentValueCount <= 0 || currentValueCount - numberOfValues[numberOfValues.Count - 1] != 0)
             {
                 Debug.LogError("Number of data values do not match (Missing Values!)");
                 return;
@@ -172,7 +174,7 @@ public class Vis
     /// <param name="numberOfTicks"></param>
     public virtual void ChangeAxisAttribute(int axisId, int selectedDimension, int numberOfTicks)
     {
-        
+
     }
 
     /// <summary>
@@ -189,7 +191,7 @@ public class Vis
     public virtual void UpdateGrids()
     {
         // Update Grid
-        if(visContainer != null) visContainer.MoveGridBasedOnViewingDirection();
+        if (visContainer != null) visContainer.MoveGridBasedOnViewingDirection();
     }
 
     //ToDo: Add your Vis to the switch statement
@@ -205,6 +207,7 @@ public class Vis
             default:
             case VisType.Scatterplot:
                 return new VisScatterplot();
+            //NewCode_Group4
             case VisType.Histogram:
                 return new VisHistogram();
             case VisType.Density:
