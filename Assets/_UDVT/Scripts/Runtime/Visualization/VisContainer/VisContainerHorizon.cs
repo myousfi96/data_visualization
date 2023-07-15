@@ -26,7 +26,7 @@ public  void RenderSurface(Vector3 [] points1,Vector3 [] points2,Vector3 [] poin
 
         // Populate the triangle indices based on the length of the points array
         int index = 0;
-        for (int i = 1; i < points1.Length - 13; i++)
+        for (int i = 1; i < points1.Length - 1; i++)
         {
             triangles[index] = i-1;
             triangles[index + 1] = i;
@@ -36,6 +36,14 @@ public  void RenderSurface(Vector3 [] points1,Vector3 [] points2,Vector3 [] poin
             triangles[index + 5] = i-1;
             
             index += 6;
+        }
+
+                if (points3.Length < 1){
+        points3 = new Vector3[3];
+        points3[0] = new Vector3(0  , 0 , 0) ;
+        points3[1] = new Vector3(0  , 0 , 0) ;
+        points3[2] = new Vector3(0  , 0 , 0) ;
+
         }
 
          int[] triangles3 = new int[(points3.Length - 2)  * 6];
@@ -54,7 +62,14 @@ public  void RenderSurface(Vector3 [] points1,Vector3 [] points2,Vector3 [] poin
             index += 6;
         }
 
-                 int[] triangles4 = new int[(points4.Length - 2)  * 6];
+        if (points4.Length < 1){
+        points4 = new Vector3[3];
+        points4[0] = new Vector3(0  , 0 , 0) ;
+        points4[1] = new Vector3(0  , 0 , 0) ;
+        points4[2] = new Vector3(0  , 0 , 0) ;
+
+        }
+        int[] triangles4 = new int[(points4.Length - 2)  * 6];
 
         // Populate the triangle indices based on the length of the points array
          index = 0;
