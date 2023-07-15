@@ -1,3 +1,5 @@
+//NewCode_Group4
+
 using System;
 
 /// <summary>
@@ -71,18 +73,18 @@ public class KernelDensityEstimationViolin
         }
 
         // compilation of the X,Y to result. Good for creating plot(x, y)
-        for (int i = 0; i < nsteps ; i++ )
+        for (int i = 0; i < nsteps; i++)
         {
             result[i, 0] = x[i];
 
 
         }
-                    int index = 0;
+        int index = 0;
 
-        for (int i = 0; i < (nsteps*2)-1 ; i+=2)
+        for (int i = 0; i < (nsteps * 2) - 1; i += 2)
         {
             result[i, 1] = y[index];
-            result[i+1, 1] = - y[index];
+            result[i + 1, 1] = -y[index];
             index++;
 
         }

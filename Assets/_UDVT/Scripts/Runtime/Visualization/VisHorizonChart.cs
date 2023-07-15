@@ -1,3 +1,4 @@
+//NewCode_Group4
 using System.Linq;
 using UnityEngine;
 public class VisHorizonChart : Vis
@@ -21,23 +22,23 @@ public class VisHorizonChart : Vis
         visContainer.SetAxisOffsets(xyzOffset);
         visContainer.SetAxisTickNumber(xyzTicks);
         visContainer.SetColorScheme(colorScheme);
-        
-        double [,] data = KernelDensityEstimation.KDE(dataSets[0].ElementAt(0).Value, 2, 100);
 
-        double [] x = new double[100];
-        double [] y = new double[100];
-  
+        double[,] data = KernelDensityEstimation.KDE(dataSets[0].ElementAt(0).Value, 2, 100);
+
+        double[] x = new double[100];
+        double[] y = new double[100];
 
 
-        
+
+
         for (int i = 0; i < 100; i++)
         {
-           x[i] = data[i, 0] ;
-          y[i] = data[i, 1];
+            x[i] = data[i, 0];
+            y[i] = data[i, 1];
         }
         //## 01:  Create Axes and Grids
 
-  
+
         visContainer.CreateAxis(dataSets[0].ElementAt(0).Key, x, Direction.X);
         visContainer.CreateGrid(Direction.X, Direction.Y);
 
@@ -52,7 +53,7 @@ public class VisHorizonChart : Vis
         //## 02: Set Remaining Vis Channels (Color,...)
         visContainer.SetChannel(VisChannel.XPos, x);
         visContainer.SetChannel(VisChannel.YPos, y);
-        
+
         // visContainer.SetChannel(VisChannel.ZPos, dataSets[0].ElementAt(2).Value);
         visContainer.SetChannel(VisChannel.Color, y);
 
@@ -66,6 +67,6 @@ public class VisHorizonChart : Vis
         return visContainerObject;
     }
 
-     
+
 
 }
