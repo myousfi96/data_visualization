@@ -52,7 +52,7 @@ public class MainScript : MonoBehaviour
 
         //## 03: Visualize Dataset
 
-        vis = Vis.GetSpecificVisType(VisType.HorizonPlot);
+        vis = Vis.GetSpecificVisType(VisType.HorizonChart);
         vis.AppendData(dataSet);
         vis.CreateVis(this.gameObject);
     }

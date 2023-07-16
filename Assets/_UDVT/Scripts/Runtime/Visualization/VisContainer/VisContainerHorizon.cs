@@ -26,7 +26,7 @@ public  void RenderSurface(Vector3 [] points1,Vector3 [] points2,Vector3 [] poin
 
         // Populate the triangle indices based on the length of the points array
         int index = 0;
-        for (int i = 1; i < points1.Length - 1; i++)
+        for (int i = 1; i < points1.Length - 13; i++)
         {
             triangles[index] = i-1;
             triangles[index + 1] = i;
@@ -38,7 +38,7 @@ public  void RenderSurface(Vector3 [] points1,Vector3 [] points2,Vector3 [] poin
             index += 6;
         }
 
-                if (points3.Length < 1){
+        if (points3.Length < 1){
         points3 = new Vector3[3];
         points3[0] = new Vector3(0  , 0 , 0) ;
         points3[1] = new Vector3(0  , 0 , 0) ;
@@ -46,8 +46,7 @@ public  void RenderSurface(Vector3 [] points1,Vector3 [] points2,Vector3 [] poin
 
         }
 
-         int[] triangles3 = new int[(points3.Length - 2)  * 6];
-
+        int[] triangles3 = new int[(points3.Length - 2)  * 6];
         // Populate the triangle indices based on the length of the points array
          index = 0;
         for (int i = 1; i < points3.Length - 1; i++)
@@ -135,11 +134,7 @@ public  void RenderSurface(Vector3 [] points1,Vector3 [] points2,Vector3 [] poin
         meshRenderer3.material.color = newColor;
         newColor = new Color(Color.red.r , Color.red.g, Color.red.b, (float)0.8);
 
-        meshRenderer4.material.color = newColor;
-
-
-    
-        
+        meshRenderer4.material.color = newColor;     
 
 
         // Assign the triangles to the mesh
@@ -261,7 +256,6 @@ public override void CreateDataMarks(GameObject markPrefab, bool line = false, b
                 meshPoints3[z + 1] = new Vector3(meshPoints1[i].x, (float)mediany, 0);
                 meshPoints1[i] = new Vector3(0,  0 , 0);
                 meshPoints1[i+1] = new Vector3(0,  0 , 0);
-
                 z = z +2 ;
             }
             if( meshPoints2[i].y >= (double) medianBand ) {
